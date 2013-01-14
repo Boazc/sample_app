@@ -99,14 +99,24 @@ describe User do
   	describe "password is valid" do
   		it { should == found_user.authenticate(@user.password)}
   	end
+  
 
-	describe "password is invalid" do
-		let (:user_for_invalid_password) { found_user.authenticate("bla") }
-  		
-  		it { should_not == user_for_invalid_password}
-  		specify { user_for_invalid_password.should be_false}
-  	end  	
-  	
+  	describe "password is invalid" do
+  		let (:user_for_invalid_password) { found_user.authenticate("bla") }
+    		
+    		it { should_not == user_for_invalid_password}
+    		specify { user_for_invalid_password.should be_false}
+    end  
+  end
+
+  describe "email address with mixed case do" do
+    let(:email_address) {"fooBAr@GMail.coM"}
+
+    it "should be saved as all lower case" do
+        @user.email = email_address
+        @user.save
+        @user.reload.email.should == email_address.downcase
+    end
   end
 
 end
