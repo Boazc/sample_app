@@ -6,7 +6,7 @@ module SessionsHelper
 	end
 
 	def signed_in? 
-		!current_user.nil?
+		!current_user.nil?		
 	end
 
 	def sign_out
@@ -21,4 +21,21 @@ module SessionsHelper
 	def current_user
 		@current_user ||= User.find_by_remember_token(cookies[:remember_token])
 	end
+
+	def current_user?(user)
+		user == current_user
+	end
+
+	def save_path
+		session[:return_to] = request.fullpath
+	end
+
+	def redirect_before_or (default)		
+		path = session[:return_to]
+		session.delete(:return_to)	
+		redirect_to(session[:return_to] || default)		
+
+	end
+
+
 end

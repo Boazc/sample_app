@@ -1,0 +1,12 @@
+<% provide(:title , 'Users page') %>
+
+<h1>All Users</h1>
+<p>Find me in app/views/users/edit.html.erb</p>
+
+<%= will_paginate %>
+
+<ul class="users">
+	<%= render @users %>	
+</ul>
+
+<%= will_paginate %>

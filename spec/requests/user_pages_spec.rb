@@ -7,7 +7,6 @@ describe "UserPages" do
 		before { visit signup_path }
 		it {should have_selector 'h1', text: 'Sign up'}
 		it {should have_selector 'title', text: full_title('Sign up')}
-
 	end
 
 	describe "profile page" do
@@ -62,4 +61,50 @@ describe "UserPages" do
 			end
 		end
 	end
+
+	describe "edit" do
+		let(:user) {FactoryGirl.create(:user)}
+		before do
+			visit signin_path
+			fill_in "Email",	with: user.email
+			fill_in "Password",	with: user.password
+			click_button "Sign in"
+			visit edit_user_path(user)
+		end
+
+		describe "page" do
+			it {should have_selector 'h1', text: 'Update user profile'}
+			it {should have_selector 'title', text: full_title('Edit page')}
+		end
+
+		describe "with invalid information" do
+			before {click_button "Save changes"}
+
+			it {should have_content('error')}
+		end
+
+		describe "with valid information" do
+			let (:new_name) {"new name"}
+			let (:new_mail) {"new@example.com"}
+
+			before do
+				fill_in "Name",       			with: new_name
+				fill_in "Email",      			with: new_mail
+				fill_in "Password",   			with: user.password
+				fill_in "Confirm password",   	with: user.password
+				
+				click_button "Save changes"
+			end
+
+			it {should have_selector('title', text: new_name)}
+			it {should have_selector('div.alert.alert-success', text: 'Profile updated')}
+			it {should have_link('Sign out', href: signout_path)}
+
+			specify {user.reload.name  = new_name}
+			specify {user.reload.email = new_mail}
+		end
+
+
+	end
+	
 end

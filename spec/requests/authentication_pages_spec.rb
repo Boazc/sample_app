@@ -32,7 +32,7 @@ describe "Authentication" do
 
 			let (:user) {FactoryGirl.create(:user)}
 
-			before do
+			before do				
 				fill_in "Email",	with: user.email
 				fill_in "Password",	with: user.password
 				click_button "Sign in"
