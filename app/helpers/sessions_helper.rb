@@ -26,15 +26,19 @@ module SessionsHelper
 		user == current_user
 	end
 
-	def save_path
+	def signed_in_user 
+        save_path
+        redirect_to signin_path, notice: "Please sign in" unless signed_in?
+    end
+    
+	def save_path	
 		session[:return_to] = request.fullpath
 	end
 
 	def redirect_before_or (default)		
 		path = session[:return_to]
 		session.delete(:return_to)	
-		redirect_to(session[:return_to] || default)		
-
+		redirect_to(path || default)		
 	end
 
 
